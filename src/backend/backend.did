@@ -1,0 +1,31 @@
+type Error = variant { NotFound : record { msg : text } };
+type Result = variant { Ok : TravelExperience; Err : Error };
+type TravelExperience = record {
+  id : nat64;
+  destination : text;
+  date : nat64;
+  notes : text;
+  historical_events : vec text;
+};
+type TravelExperiencePayload = record {
+  destination : text;
+  date : nat64;
+  notes : text;
+  historical_events : vec text;
+};
+service : {
+  add_travel_experience : (TravelExperiencePayload) -> (opt TravelExperience);
+  delete_travel_experience : (nat64) -> (Result);
+  get_all_travel_experiences : () -> (vec TravelExperience) query;
+  get_latest_travel_experiences : (nat64) -> (vec TravelExperience) query;
+  get_sorted_travel_experiences_by_date : () -> (vec TravelExperience) query;
+  get_total_travel_experiences : () -> (nat64) query;
+  get_travel_experience : (nat64) -> (Result) query;
+  get_travel_experiences_before_date : (nat64) -> (vec TravelExperience) query;
+  get_travel_experiences_count_before_date : (nat64) -> (nat64) query;
+  search_travel_experiences_by_destination : (text) -> (
+      vec TravelExperience,
+    ) query;
+  update_travel_experience : (nat64, TravelExperiencePayload) -> (Result);
+  update_travel_experience_date : (nat64, nat64) -> (Result);
+}
